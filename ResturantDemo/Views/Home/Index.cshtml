@@ -1,0 +1,47 @@
+﻿@model IEnumerable<ResturantDemo.Models.Category>
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>Restaurant</h1>
+    <p class="lead">Hey hey!<marquee>Come and eat our food!</marquee></p>
+</div>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <div>
+        <button onclick="ShowCreateForm()">Create Menu Section</button>
+        <div id="CreateForm"></div>
+    </div>
+}
+
+
+<div class="row">
+    <div class="col-md-8">
+        @foreach (var category in Model)
+        {
+            @Html.Partial("_MenuItemPartial", category)
+        }
+    </div>
+    <div class="col-md-4">
+        Resturant side bar
+    </div>
+</div>
+
+@section scripts{
+
+    <script>
+        var ShowCreateForm = function () {
+            $.ajax({
+                url: "/home/create",
+                method: "GET",
+                dataType:"html", 
+                success: function (partial) {
+                    $("#CreateForm").html(partial);
+                }
+            })
+        }
+    </script>
+}

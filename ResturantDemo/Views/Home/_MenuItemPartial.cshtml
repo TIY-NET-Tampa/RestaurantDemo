@@ -1,0 +1,18 @@
+﻿@model ResturantDemo.Models.Category
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">@Model.Name</h3>
+    </div>
+    <div class="panel-body">
+        @foreach (var item in Model.Menu)
+        {
+            <div class="row">
+                <div class="col-xs-8">
+                    @item.Name
+                </div>
+                <div class="col-xs-4">@Html.DisplayFor(x => item.Price)</div>
+            </div>
+        }
+    </div>
+</div>

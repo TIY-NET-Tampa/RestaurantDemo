@@ -12,7 +12,12 @@
                     @item.Name
                 </div>
                 <div class="col-xs-3">@Html.DisplayFor(x => item.Price)</div>
-                <div class="col-xs-2"><button onclick="addToCart(@item.Id)">+</button></div>
+                <div class="col-xs-2">
+                    @if (!User.IsInRole("owner"))
+                    {
+                        <button onclick="addToCart(@item.Id)">+</button>
+                    }
+                    </div>
             </div>
         }
     </div>

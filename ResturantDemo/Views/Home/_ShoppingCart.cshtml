@@ -10,4 +10,6 @@ else
 {
     <span>@Model.Items.Count()</span><span> Items in your cart</span><br/>
     <span> Total:@Html.DisplayFor(modelItem => modelItem.TotalPrice)</span>
+    <br/>
+    @Html.ActionLink("View My Cart", "ViewCart");
 }

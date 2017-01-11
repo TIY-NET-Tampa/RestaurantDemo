@@ -6,6 +6,8 @@ namespace ResturantDemo.Migrations
     using System.Linq;
     using ResturantDemo.Models;
     using System.Collections.Generic;
+    using Microsoft.AspNet.Identity.EntityFramework;
+    using Microsoft.AspNet.Identity;
 
     internal sealed class Configuration : DbMigrationsConfiguration<ResturantDemo.Models.ApplicationDbContext>
     {
@@ -16,6 +18,37 @@ namespace ResturantDemo.Migrations
 
         protected override void Seed(ResturantDemo.Models.ApplicationDbContext context)
         {
+            // Add Roles
+            var ownerRole = "owner";
+            var store = new RoleStore<IdentityRole>(context);
+            var manager = new RoleManager<IdentityRole>(store);
+
+            if (!context.Roles.Any(a => a.Name == ownerRole))
+            {
+                var role = new IdentityRole { Name = ownerRole };
+                manager.Create(role);
+            }
+            var customerRole = "customer";
+            if (!context.Roles.Any(a => a.Name == customerRole))
+            {
+                var role = new IdentityRole { Name = customerRole };
+                manager.Create(role);
+            }
+
+            var ownerEmail = "owner@shop.com";
+            var defaultPassword = "Password1!";
+            if (!context.Users.Any(u => u.UserName == ownerEmail))
+            {
+                var userStore = new UserStore<ApplicationUser>(context);
+                var userManager = new UserManager<ApplicationUser>(userStore);
+                var user = new ApplicationUser { UserName = ownerEmail };
+
+                userManager.Create(user,defaultPassword);
+                userManager.AddToRole(user.Id, ownerRole);
+            }
+
+
+            // Add a first account
 
             var winList = new Category { Name = "Wines" };
             var Entrees = new Category { Name = "Entrees" };

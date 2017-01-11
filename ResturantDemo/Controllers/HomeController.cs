@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using ResturantDemo.Models;
+using Microsoft.AspNet.Identity;
 
 namespace ResturantDemo.Controllers
 {
@@ -99,6 +100,28 @@ namespace ResturantDemo.Controllers
             }
             return PartialView("_ShoppingCart", cart);
 
+        }
+
+        public ActionResult ViewCart()
+        {
+            var cart = HttpContext.Session["cart"] as Order;
+            return View(cart);
+        }
+
+        [Authorize(Roles ="customer")]
+        public ActionResult PlaceOrder()
+        {
+            var cart = HttpContext.Session["cart"] as Order;
+            var db = new ApplicationDbContext();
+            if (cart != null)
+            {
+                cart.CustomerId = User.Identity.GetUserId();
+                db.Orders.Add(cart);
+                db.SaveChanges();
+                HttpContext.Session.Remove("cart"); //["cart"] = null;
+            }
+
+            return View();
         }
     }
 }

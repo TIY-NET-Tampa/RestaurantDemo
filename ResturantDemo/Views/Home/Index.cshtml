@@ -16,7 +16,7 @@
 </div>
 <hr />
 
-@if (User.Identity.IsAuthenticated)
+@if ( User.IsInRole("owner"))
 {
     <div>
         <button onclick="ShowCreateForm()">Create Menu Section</button>

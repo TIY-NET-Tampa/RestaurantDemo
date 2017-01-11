@@ -18,21 +18,32 @@ namespace ResturantDemo.Migrations
         {
 
             var winList = new Category { Name = "Wines" };
+            var Entrees = new Category { Name = "Entrees" };
             //  This method will be called after migrating to the latest version.
             context.Categories.AddOrUpdate(cat => cat.Name,
                winList,
-                new Models.Category { Name = "Desserts" },
-                new Models.Category { Name = "Entrees" },
-                new Models.Category { Name = "Appetizers" }
-                );
+               Entrees);
 
             context.SaveChanges();
 
             var wine1 = new MenuItem { Name = "Riseling", Price = 2.45, CategoryId = winList.Id };
             var wine2 = new MenuItem { Name = "Chardenauy", Price = 10.12, CategoryId = winList.Id };
             context.MenuItems.AddOrUpdate(mi => mi.Name,
-                wine1, 
+                wine1,
                 wine2);
+
+            var entress = new List<MenuItem> {
+                new MenuItem {Name = "Pizza" ,Price = 5},
+                new MenuItem {Name = "Shrimp", Price = 12 },
+                new MenuItem {Name = "Steakums", Price = 3.5 },
+            };
+            entress = entress.Select(s => new MenuItem(s) { CategoryId = Entrees.Id }).ToList();
+
+            entress.ForEach(menuItem =>
+            {
+                context.MenuItems.AddOrUpdate(mi => mi.Name, menuItem);
+            });
+            context.SaveChanges();
         }
     }
 }

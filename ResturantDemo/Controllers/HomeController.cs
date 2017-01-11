@@ -70,5 +70,35 @@ namespace ResturantDemo.Controllers
             return RedirectToAction("Index");
         }
 
+
+        [HttpGet]
+        public ActionResult ShoppingCart()
+        {
+            var cart = HttpContext.Session["cart"] as Order;
+            return PartialView("_ShoppingCart", cart); 
+        }
+
+        [HttpPost]
+        public ActionResult ShoppingCart(int id)
+        {
+            var cart = HttpContext.Session["cart"] as Order;
+            if (cart == null)
+            {
+                cart = new Order();
+            }
+            var db = new ApplicationDbContext();
+            var item = db.MenuItems.FirstOrDefault(f => f.Id == id);
+            cart.Items.Add(item);
+            if (HttpContext.Session["cart"] as Order == null)
+            {
+                HttpContext.Session.Add("cart", cart);
+            }
+            else
+            {
+                HttpContext.Session["cart"] = cart;
+            }
+            return PartialView("_ShoppingCart", cart);
+
+        }
     }
 }

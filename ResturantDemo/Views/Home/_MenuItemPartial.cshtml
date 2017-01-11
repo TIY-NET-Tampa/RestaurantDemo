@@ -8,10 +8,11 @@
         @foreach (var item in Model.Menu)
         {
             <div class="row">
-                <div class="col-xs-8">
+                <div class="col-xs-7">
                     @item.Name
                 </div>
-                <div class="col-xs-4">@Html.DisplayFor(x => item.Price)</div>
+                <div class="col-xs-3">@Html.DisplayFor(x => item.Price)</div>
+                <div class="col-xs-2"><button onclick="addToCart(@item.Id)">+</button></div>
             </div>
         }
     </div>

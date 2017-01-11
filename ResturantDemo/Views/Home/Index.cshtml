@@ -9,6 +9,13 @@
     <p class="lead">Hey hey!<marquee>Come and eat our food!</marquee></p>
 </div>
 
+
+<hr />
+<div id="shoppingCart">
+    @Html.Partial("_ShoppingCart", new ResturantDemo.Models.Order())
+</div>
+<hr />
+
 @if (User.Identity.IsAuthenticated)
 {
     <div>
@@ -37,11 +44,37 @@
             $.ajax({
                 url: "/home/create",
                 method: "GET",
-                dataType:"html", 
+                dataType: "html",
                 success: function (partial) {
                     $("#CreateForm").html(partial);
                 }
             })
         }
+
+        var addToCart = function (itemId) {
+            $.ajax({
+                url: "/home/ShoppingCart/" + itemId,
+                method: "POST",
+                dataType: "html",
+                success: function (partial) {
+                    $("#shoppingCart").html(partial);
+                }
+            });
+        }
+
+        var getShoppingCard = function () {
+            $.ajax({
+                url: "/home/ShoppingCart",
+                method: "GET",
+                dataType: "html",
+                success: function (partial) {
+                    $("#shoppingCart").html(partial);
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            getShoppingCard();
+        });
     </script>
 }

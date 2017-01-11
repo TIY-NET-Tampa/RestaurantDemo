@@ -1,0 +1,13 @@
+﻿@model ResturantDemo.Models.Order
+
+
+
+@if (Model == null || Model.Items.Count() == 0)
+{
+    <span>Nothing your cart</span>
+}
+else
+{
+    <span>@Model.Items.Count()</span><span> Items in your cart</span><br/>
+    <span> Total:@Html.DisplayFor(modelItem => modelItem.TotalPrice)</span>
+}
